@@ -1,0 +1,102 @@
+package DanielG.NetbeansCS2050InClass;
+
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+
+public class Add implements ActionListener {
+
+	public static final int TEXT_WIDTH = 5;
+	public static void main(String[] arg) {
+		Add a = new Add();
+	}
+
+
+	JTextField number1;
+	JTextField number2;
+	JTextField ans_text;
+	JFrame frame;
+	JFileChooser fileGuy;
+
+	public Add() {
+		this.frame = new JFrame("Adding");
+		JPanel centerGuy = new JPanel(new GridLayout(3,1));
+		JPanel pane = new JPanel();
+
+		JPanel one = new JPanel();
+		one.add(new JLabel("Number 1 "));
+		number1 = new JTextField(TEXT_WIDTH);		
+		number1.setHorizontalAlignment(JTextField.RIGHT);
+		one.add(number1);
+		centerGuy.add(one);
+
+		JPanel two	= new JPanel();
+		two.add(new JLabel("Number 2 "));
+		number2 = new JTextField(TEXT_WIDTH);		
+		number2.setHorizontalAlignment(JTextField.RIGHT);
+		two.add(number2);
+		centerGuy.add(two);
+
+		JPanel ans	= new JPanel();
+		ans.add(new JLabel("    Sum      "));
+		ans_text = new JTextField(TEXT_WIDTH);		
+		ans_text.setHorizontalAlignment(JTextField.RIGHT);
+		ans.add(ans_text);
+		centerGuy.add(ans);
+
+		JButton go = new JButton("Calculate");
+		go.addActionListener(this);
+		JPanel east = new JPanel();
+		east.add(go);
+		frame.add(east, BorderLayout.EAST);
+		
+
+		pane.add(centerGuy);
+		frame.add(pane,BorderLayout.CENTER);
+
+		buildMenubar();
+		frame.setBounds(200,150,700,450);
+		frame.setVisible(true);
+	}
+
+	private void buildMenubar() {
+		JMenuBar bar = new JMenuBar();
+		JMenu file	 = new JMenu("File");
+		bar.add(file);
+		JMenuItem open = new JMenuItem("Open");
+		open.addActionListener(
+			new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					System.out.printf("Opening a file\n");
+					openAFile();
+				}
+			}
+		);
+		file.add(open);
+		frame.setJMenuBar(bar);
+	}
+
+	private void openAFile() {
+		fileGuy = new JFileChooser();
+		int result = fileGuy.showOpenDialog(null);
+		System.out.printf("The filechooser returned %d\n",result);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			File fil = fileGuy.getSelectedFile();
+			String fname	= fileGuy.getName(fil);
+			System.out.printf("The file selected is %s\n",fname);
+		}
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		int num1 = Integer.parseInt(number1.getText());
+		int num2 = Integer.parseInt(number2.getText());
+		System.out.printf("Adding %d and %d\n",num1,num2);
+		int ans = num1 + num2;
+		String thesum = String.format("%,d",ans);
+		ans_text.setText(thesum);
+	}
+}
+
+
